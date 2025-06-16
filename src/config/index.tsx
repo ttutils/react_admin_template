@@ -1,0 +1,1 @@
+export const APP_NAME: string = 'react_admin_template';
