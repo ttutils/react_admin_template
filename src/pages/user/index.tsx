@@ -113,7 +113,14 @@ const UserPage = () => {
                         <Button type="primary" theme='solid' onClick={() => editInfo(record)}>编辑</Button>
                         <Button type="primary" theme='solid'
                                 onClick={() => changePasswd(record.user_id)}>修改密码</Button>
-                        <Button type="danger" theme='solid' onClick={() => handleDelete(record.user_id)}>删除</Button>
+                        <Button
+                            type="danger"
+                            theme="solid"
+                            disabled={record.user_id === '1'}
+                            onClick={() => handleDelete(record.user_id)}
+                        >
+                            删除
+                        </Button>
                     </div>
                 );
             },
