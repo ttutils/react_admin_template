@@ -24,8 +24,13 @@ const Login = () => {
     };
 
     return (
-        <div className='flex flex-col gap-8 p-8 rounded-lg bg-[var(--semi-color-white)] w-[600px] h-[500px]'
-             style={{border: '1px solid var(--semi-color-border)'}}>
+        <div
+            className='flex flex-col gap-8 p-8 rounded-lg w-[600px] h-[500px]'
+            style={{
+                border: '1px solid var(--semi-color-border)',
+                backgroundColor: 'var(--semi-color-bg-1)', // 自动适配深色模式
+            }}
+        >
             <div className="flex flex-col items-center mb-6">
                 <Text className="text-3xl font-bold text-[--semi-color-primary]">欢迎登录 {APP_NAME}</Text>
                 <Text className="text-sm text-[--semi-color-text-2] mt-2">请输入您的账号和密码</Text>

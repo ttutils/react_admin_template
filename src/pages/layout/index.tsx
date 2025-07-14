@@ -37,7 +37,7 @@ export default function Layout() {
 
     const onSelect = (data: OnSelectedData) => {
         // 设置浏览器title
-        document.title = `${data.selectedItems[0].text}-Semi UI Pro`;
+        document.title = `${data.selectedItems[0].text}-${APP_NAME}`;
         setPathKey(data.selectedKeys.map(String));
         navigate(data.itemKey as string);
     };
