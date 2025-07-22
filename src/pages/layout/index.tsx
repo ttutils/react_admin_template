@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Dropdown, Form, Layout as MainLayout, Modal, Nav, Spin } from "@douyinfe/semi-ui";
-import { IconSemiLogo } from "@douyinfe/semi-icons";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { MenuRoutes } from "@/src/router/routes";
 import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
 import { getUserid, getUsername, removeToken } from "@/src/utils/auth";
@@ -11,6 +11,8 @@ import ChangePasswordModal from "@/src/components/ChangePasswordModal";
 import SwitchThemeButton from "@/src/components/SwitchThemeButton";
 import { UserService } from "@/src/services/user";
 import { FormApi } from "@douyinfe/semi-ui/lib/es/form";
+// @ts-ignore
+import logo from "@/src/images/confkeeper.png"
 
 const {Header, Sider, Content} = MainLayout;
 
@@ -81,7 +83,7 @@ export default function Layout() {
                         className="min-w-screen"
                         mode="horizontal"
                         header={{
-                            logo: <IconSemiLogo style={{height: "36px", fontSize: 36}}/>,
+                            logo: <img src={logo} alt="logo" style={{width: '32px', height: '32px'}}/>,
                             text: `${APP_NAME} 管理后台`,
                         }}
                         footer={<>
@@ -121,13 +123,22 @@ export default function Layout() {
                                 }}/>
                         </Sider>
                         <Content className="overflow-auto">
-                            <Suspense
-                                fallback={<div className="flex items-center justify-center w-screen h-screen">
-                                    <Spin/>
-                                </div>}
-                            >
-                                <Outlet/>
-                            </Suspense>
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={location.pathname}
+                                    initial={{opacity: 0, x: -50}}
+                                    animate={{opacity: 1, x: 0}}
+                                    transition={{duration: 0.5}}
+                                >
+                                    <Suspense
+                                        fallback={<div className="flex items-center justify-center w-screen h-screen">
+                                            <Spin/>
+                                        </div>}
+                                    >
+                                        <Outlet/>
+                                    </Suspense>
+                                </motion.div>
+                            </AnimatePresence>
                         </Content>
                     </div>
                 </MainLayout>
@@ -152,10 +163,6 @@ export default function Layout() {
                         field='username'
                         label='用户名'
                         rules={[{required: true, message: '请输入用户名'}]}
-                    />
-                    <Form.Input
-                        field='email'
-                        label='邮箱'
                     />
                 </Form>
             </Modal>
