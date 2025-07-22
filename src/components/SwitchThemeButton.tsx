@@ -1,17 +1,35 @@
 import { IconMoon } from "@douyinfe/semi-icons";
 import { Button, Tooltip } from "@douyinfe/semi-ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SwitchThemeButton() {
-    const [isDark, setIsDark] = useState<boolean>(false);
+    // 从 localStorage 初始化状态
+    const [isDark, setIsDark] = useState<boolean>(() => {
+        const savedMode = localStorage.getItem('theme-mode');
+        return savedMode === 'dark';
+    });
+
+    useEffect(() => {
+        // 组件加载时应用存储的主题
+        const body = document.body;
+        if (isDark) {
+            body.setAttribute("theme-mode", "dark");
+        } else {
+            body.removeAttribute("theme-mode");
+        }
+    }, []); // 空依赖数组表示只在组件挂载时执行一次
 
     const changeMode = () => {
-        setIsDark(!isDark);
+        const newMode = !isDark;
+        setIsDark(newMode);
+
         const body = document.body;
-        if (body.hasAttribute("theme-mode")) {
-            body.removeAttribute("theme-mode");
-        } else {
+        if (newMode) {
             body.setAttribute("theme-mode", "dark");
+            localStorage.setItem('theme-mode', 'dark');
+        } else {
+            body.removeAttribute("theme-mode");
+            localStorage.removeItem('theme-mode');
         }
     };
 
