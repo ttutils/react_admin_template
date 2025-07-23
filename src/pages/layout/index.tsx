@@ -5,14 +5,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MenuRoutes } from "@/src/router/routes";
 import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
 import { getUserid, getUsername, removeToken } from "@/src/utils/auth";
-import { APP_NAME } from "@/src/config";
+import { APP_LOGIN_REDIRECT_URI, APP_LOGIN_URI, APP_NAME } from "@/src/config";
 import Footer from "@/src/pages/layout/Footer";
 import ChangePasswordModal from "@/src/components/ChangePasswordModal";
 import SwitchThemeButton from "@/src/components/SwitchThemeButton";
 import { UserService } from "@/src/services/user";
 import { FormApi } from "@douyinfe/semi-ui/lib/es/form";
-// @ts-ignore
-import logo from "@/src/images/confkeeper.png"
+import { IconSemiLogo } from "@douyinfe/semi-icons";
 
 const {Header, Sider, Content} = MainLayout;
 
@@ -34,7 +33,7 @@ export default function Layout() {
 
     const logout = () => {
         removeToken();
-        navigate("/user/login");
+        navigate(APP_LOGIN_URI);
     };
 
     const onSelect = (data: OnSelectedData) => {
@@ -83,8 +82,22 @@ export default function Layout() {
                         className="min-w-screen"
                         mode="horizontal"
                         header={{
-                            logo: <img src={logo} alt="logo" style={{width: '32px', height: '32px'}}/>,
-                            text: `${APP_NAME} 管理后台`,
+                            logo: (
+                                <div
+                                    onClick={() => navigate(APP_LOGIN_REDIRECT_URI)}
+                                    style={{cursor: 'pointer', display: 'flex', alignItems: 'center'}}
+                                >
+                                    <IconSemiLogo style={{height: "36px", fontSize: 36}}/>,
+                                </div>
+                            ),
+                            text: (
+                                <div
+                                    onClick={() => navigate(APP_LOGIN_REDIRECT_URI)}
+                                    style={{cursor: 'pointer', fontWeight: 500}}
+                                >
+                                    {APP_NAME} 管理后台
+                                </div>
+                            ),
                         }}
                         footer={<>
                             <SwitchThemeButton/>
@@ -128,6 +141,7 @@ export default function Layout() {
                                     key={location.pathname}
                                     initial={{opacity: 0, x: -50}}
                                     animate={{opacity: 1, x: 0}}
+                                    exit={{opacity: 0, x: 50}}
                                     transition={{duration: 0.5}}
                                 >
                                     <Suspense

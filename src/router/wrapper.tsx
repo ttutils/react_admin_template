@@ -4,6 +4,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { getToken } from '@/src/utils/auth';
+import { APP_LOGIN_REDIRECT_URI, APP_LOGIN_URI } from "@/src/config";
 
 interface IProps {
     component: JSX.Element;
@@ -17,12 +18,12 @@ const Wrapper = ( props: IProps ): JSX.Element => {
 
     // 登录校验
     if (auth && token == null) {
-        return <Navigate to='/user/login'/>
+        return <Navigate to={APP_LOGIN_URI}/>
     }
 
     // 重定向
     if (pathname === '/' || pathname === 'dashboard' || pathname === 'user/login') {
-        return <Navigate to='/home'/>
+        return <Navigate to={APP_LOGIN_REDIRECT_URI}/>
     } else {
         return component;
     }

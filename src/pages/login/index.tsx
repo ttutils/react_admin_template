@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Typography } from '@douyinfe/semi-ui';
 import { IconKey, IconUser } from '@douyinfe/semi-icons';
-import { APP_NAME } from "@/src/config";
+import { APP_LOGIN_REDIRECT_URI, APP_NAME } from "@/src/config";
 import { UserService } from "@/src/services/user";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const Login = () => {
     const handleSubmit = async (values: any) => {
         setLoading(true);
         await UserService.login(values);
-        navigate('/home');
+        navigate(APP_LOGIN_REDIRECT_URI);
     };
 
     return (

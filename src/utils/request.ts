@@ -3,6 +3,7 @@ import adapterFetch from 'alova/fetch';
 import ReactHook from 'alova/react';
 import { getToken, removeToken } from "@/src/utils/auth";
 import { Toast } from "@douyinfe/semi-ui";
+import { APP_LOGIN_URI } from "@/src/config";
 
 const nonvalidateRequiredApi = [
     '/api/user/login',
@@ -25,7 +26,7 @@ const alovaInstance = createAlova({
                 // 401 未授权，跳转登录页
                 Toast.error('登录已过期，请重新登录');
                 removeToken();
-                window.location.href = '/user/login';
+                window.location.href = APP_LOGIN_URI;
             }
             const json = await response.json();
             if (response.status === 200) {
