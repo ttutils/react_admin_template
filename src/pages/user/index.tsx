@@ -9,15 +9,15 @@ import ChangePasswordModal from "@/src/components/ChangePasswordModal";
 import { AddUserParams } from "@/src/api/user/types";
 
 const UserPage = () => {
-    const pageSize: number = 8;
-    const [pageNum, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState<number>(12);
+    const [pageNum, setPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<{ username?: string; email?: string }>({});
     const [usernameInput, setUsernameInput] = useState('');
     const [emailInput, setEmailInput] = useState('');
     const serviceResponse = useService(() => UserService.list({
         page: pageNum,
         page_size: pageSize, ...queryParams
-    }), [pageNum, queryParams]);
+    }), [pageNum, pageSize, queryParams]);
     const {data, loading} = serviceResponse[0];
     const refresh = serviceResponse[1];
     const [visible, setVisible] = useState(false);
@@ -165,14 +165,20 @@ const UserPage = () => {
                         loading={loading}
                         columns={columns}
                         dataSource={data?.data}
+                        size="small"
                         bordered
                         pagination={{
                             pageSize,
                             total: data?.total,
                             currentPage: pageNum,
                             className: 'px-4 mt-4',
-                            onChange: (page: number) => {
-                                setPage(page)
+                            showSizeChanger: true,
+                            hoverShowPageSelect: true,
+                            pageSizeOpts: [20, 50, 100],
+                            onChange: (page: number, pageSize: number) => {
+                                setPage(page);
+                                setPageSize(pageSize);
+                                refresh();
                             },
                         }}
                     />
