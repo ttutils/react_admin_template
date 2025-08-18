@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Dropdown, Form, Layout as MainLayout, Modal, Nav, Spin } from "@douyinfe/semi-ui";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { MenuRoutes } from "@/src/router/routes";
+import { defaultOpenKeys, MenuRoutes } from "@/src/router/routes";
 import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
 import { getUserid, getUsername, removeToken } from "@/src/utils/auth";
 import { APP_LOGIN_REDIRECT_URI, APP_LOGIN_URI, APP_NAME } from "@/src/config";
@@ -130,6 +130,7 @@ export default function Layout() {
                                 style={{height: '100%', minHeight: 'calc(100vh - 120px)'}}
                                 selectedKeys={pathKey}
                                 items={MenuRoutes}
+                                defaultOpenKeys={defaultOpenKeys}
                                 onSelect={(data) => onSelect(data)}
                                 footer={{
                                     collapseButton: true,

@@ -5,6 +5,8 @@ import { getToken, removeToken } from "@/src/utils/auth";
 import { Toast } from "@douyinfe/semi-ui";
 import { APP_LOGIN_URI } from "@/src/config";
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const nonvalidateRequiredApi = [
     '/api/user/login',
 ]
@@ -29,16 +31,12 @@ const alovaInstance = createAlova({
                 window.location.href = APP_LOGIN_URI;
             }
             const json = await response.json();
-            if (response.status === 200) {
+            if (isDev && response.status === 200) {
                 console.log(json)
-                if (json.code !== 200) {
-                    Toast.error(json.msg)
-                }
             }
             return json;
         },
         onError: (err, method) => {
-            Toast.error(err.msg)
             return err.json();
         },
     }

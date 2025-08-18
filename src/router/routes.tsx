@@ -23,6 +23,10 @@ export interface IRouters {
   items?: IRouters[];
   itemKey: string;
 }
+
+// 路由默认打开
+export const defaultOpenKeys = ['/exception'];
+
 // 左侧导航路由
 export const MenuRoutes: IRouters[] = [
   {
