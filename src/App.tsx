@@ -1,11 +1,16 @@
-import { BrowserRouter } from "react-router-dom";
-import RenderRouter from "./router/routes";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { routes } from "./router/routes";
+import { Spin } from '@douyinfe/semi-ui';
+
+// 创建浏览器路由实例
+const router = createBrowserRouter(routes);
 
 function App() {
     return (
-        <BrowserRouter>
-            <RenderRouter/>
-        </BrowserRouter>
+        <RouterProvider
+            router={router}
+            fallbackElement={<Spin/>}
+        />
     );
 }
 

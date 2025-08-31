@@ -4,17 +4,23 @@ import { IconKey, IconUser } from '@douyinfe/semi-icons';
 import { APP_LOGIN_REDIRECT_URI, APP_NAME } from "@/src/config";
 import { UserService } from "@/src/services/user";
 import { useNavigate } from "react-router-dom";
+import { demoStatusStore } from "@/src/stores/useDemoStatusStore";
 
 const {Text} = Typography;
 
 const Login = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = React.useState(false);
-    const username: string = process.env.NODE_ENV !== 'production' ? 'admin' : '';
-    const password: string =
-        process.env.NODE_ENV !== 'production' ? 'admin123456' : '';
-    const remember_me: boolean =
-        process.env.NODE_ENV !== 'production';
+    const isDemo: boolean = demoStatusStore.getState().is_demo
+    let username = '';
+    let password = '';
+    let remember_me = false;
+
+    if (isDemo || process.env.NODE_ENV !== 'production') {
+        username = 'admin';
+        password = 'admin123456';
+        remember_me = true;
+    }
 
     // 使用Form组件管理表单状态
     const handleSubmit = async (values: any) => {
@@ -70,6 +76,8 @@ const Login = () => {
                 <div className="flex items-center justify-between">
                     <Form.Checkbox initValue={remember_me} field="remember_me" noLabel>记住我</Form.Checkbox>
                 </div>
+
+                {isDemo && <Text type="warning" size="small">默认账号密码为 admin/admin123456</Text>}
 
                 <Button
                     htmlType="submit"

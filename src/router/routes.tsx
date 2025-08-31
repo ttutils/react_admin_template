@@ -1,21 +1,19 @@
-import React, { FC, lazy, ReactElement, Suspense } from 'react';
-import { RouteObject, useRoutes } from 'react-router-dom';
-import { Spin } from '@douyinfe/semi-ui';
+import React, { ReactElement } from 'react';
+import { RouteObject } from 'react-router-dom';
 import Wrapper from './wrapper';
 import { IconAlertTriangle, IconFile, IconHome, IconUser } from '@douyinfe/semi-icons';
 
-// 使用懒加载导入页面组件
-const Layout = lazy(() => import('@/src/pages/layout'));
-const LayoutWithTopNav = lazy(() => import('@/src/pages/layout/layoutWithTopNav'));
+import Layout from '@/src/pages/layout';
+import LayoutWithTopNav from '@/src/pages/layout/layoutWithTopNav';
 
-const Login = lazy(() => import('@/src/pages/login'));
-const UserList = lazy(() => import('@/src/pages/user'));
+import Login from '@/src/pages/login';
+import UserList from '@/src/pages/user';
 
-const Book = lazy(() => import('@/src/pages/book'));
-const Home = lazy(() => import('@/src/pages/home'));
+import Book from '@/src/pages/book';
+import Home from '@/src/pages/home';
 
-const NotFond = lazy(() => import('@/src/pages/exception/404'));
-const NoAuth = lazy(() => import('@/src/pages/exception/403'));
+import NotFond from '@/src/pages/exception/404';
+import NoAuth from '@/src/pages/exception/403';
 
 export interface IRouters {
   text: string;
@@ -62,7 +60,7 @@ export const MenuRoutes: IRouters[] = [
 ];
 
 // 浏览器路由
-const routers: RouteObject[] = [
+export const routes: RouteObject[] = [
   {
     path: '/',
     element: <Wrapper component={<Layout />} auth />,
@@ -118,19 +116,3 @@ const routers: RouteObject[] = [
     )
   }
 ]
-
-const RenderRouter: FC = () => {
-  // 使用 useRoutes 钩子生成路由元素
-  const element = useRoutes(routers);
-  return (
-    <Suspense fallback={
-      <div className='flex items-center justify-center w-screen h-screen'>
-        <Spin />
-      </div>
-    }>
-      {element}
-    </Suspense>
-  );
-};
-
-export default RenderRouter;
