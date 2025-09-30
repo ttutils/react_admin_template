@@ -2,7 +2,7 @@ import {
   IllustrationNotFound,
   IllustrationNotFoundDark,
 } from "@douyinfe/semi-illustrations";
-import { Button, Empty } from "@douyinfe/semi-ui";
+import { Button, Empty } from "@douyinfe/semi-ui-19";
 import React from "react";
 
 const Index = () => {

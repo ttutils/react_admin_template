@@ -1,4 +1,4 @@
-import { Toast } from '@douyinfe/semi-ui';
+import { Toast } from '@douyinfe/semi-ui-19';
 import { ServerInfo } from "@/src/api/server_info";
 
 /** 服务信息 */

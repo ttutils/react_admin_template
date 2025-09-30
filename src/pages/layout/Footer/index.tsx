@@ -1,6 +1,6 @@
 import { FaRegCopyright } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
-import { Layout } from "@douyinfe/semi-ui";
+import { Layout } from "@douyinfe/semi-ui-19";
 import { APP_START_YEAR } from "@/src/config";
 import { ServerInfoService } from "@/src/services/server_info";
 

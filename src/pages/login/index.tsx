@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Typography } from '@douyinfe/semi-ui';
+import { Button, Form, Typography } from '@douyinfe/semi-ui-19';
 import { IconKey, IconUser } from '@douyinfe/semi-icons';
 import { APP_LOGIN_REDIRECT_URI, APP_NAME } from "@/src/config";
 import { UserService } from "@/src/services/user";

@@ -1,5 +1,5 @@
 import { UserAPI } from '@/src/api/user';
-import { Toast } from '@douyinfe/semi-ui';
+import { Toast } from '@douyinfe/semi-ui-19';
 import { setToken } from "@/src/utils/auth";
 import {
     AddUserParams,

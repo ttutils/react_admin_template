@@ -1,4 +1,4 @@
-import { Banner, Layout, Nav } from '@douyinfe/semi-ui';
+import { Banner, Layout, Nav } from '@douyinfe/semi-ui-19';
 import { IconSemiLogo } from '@douyinfe/semi-icons';
 import { Outlet } from 'react-router-dom';
 import { APP_NAME, DEMO_WARNING_TIP } from "@/src/config";

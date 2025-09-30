@@ -2,7 +2,7 @@ import { createAlova } from 'alova';
 import adapterFetch from 'alova/fetch';
 import ReactHook from 'alova/react';
 import { getToken, removeToken } from "@/src/utils/auth";
-import { Toast } from "@douyinfe/semi-ui";
+import { Toast } from "@douyinfe/semi-ui-19";
 import { APP_LOGIN_URI } from "@/src/config";
 
 const isDev = process.env.NODE_ENV === 'development';

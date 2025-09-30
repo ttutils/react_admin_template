@@ -1,16 +1,16 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Dropdown, Form, Layout as MainLayout, Modal, Nav, Spin } from "@douyinfe/semi-ui";
+import { Dropdown, Form, Layout as MainLayout, Modal, Nav, Spin } from "@douyinfe/semi-ui-19";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { defaultOpenKeys, MenuRoutes } from "@/src/router/routes";
-import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
+import { OnSelectedData } from "@douyinfe/semi-ui-19/lib/es/navigation";
 import { getUserid, getUsername, removeToken } from "@/src/utils/auth";
 import { APP_LOGIN_REDIRECT_URI, APP_LOGIN_URI, APP_NAME } from "@/src/config";
 import Footer from "@/src/pages/layout/Footer";
 import ChangePasswordModal from "@/src/components/ChangePasswordModal";
 import SwitchThemeButton from "@/src/components/SwitchThemeButton";
 import { UserService } from "@/src/services/user";
-import { FormApi } from "@douyinfe/semi-ui/lib/es/form";
+import { FormApi } from "@douyinfe/semi-ui-19/lib/es/form";
 import { IconSemiLogo } from "@douyinfe/semi-icons";
 
 const {Header, Sider, Content} = MainLayout;

@@ -1,5 +1,5 @@
 {
-  "name": "react_admin_template",
+  "name": "confkeeper",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -9,21 +9,22 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.85.0",
-    "@douyinfe/semi-icons-lab": "^2.85.0",
-    "@douyinfe/semi-illustrations": "^2.85.0",
-    "@douyinfe/semi-ui": "^2.85.0",
+    "@douyinfe/semi-icons": "^2.87.0-alpha.8",
+    "@douyinfe/semi-icons-lab": "^2.87.0-alpha.8",
+    "@douyinfe/semi-illustrations": "^2.87.0-alpha.8",
+    "@douyinfe/semi-ui-19": "^2.87.0-alpha.8",
     "alova": "^3.3.4",
     "dayjs": "^1.11.13",
     "framer-motion": "^12.23.12",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "monaco-editor-webpack-plugin": "^7.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.1",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@rsbuild/core": "v1.5.2",
+    "@rsbuild/core": "1.5.13",
     "@rsbuild/plugin-react": "^1.4.0",
     "@rsbuild/plugin-sass": "^1.4.0",
     "@tailwindcss/postcss": "^4.1.11",
@@ -31,7 +32,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "sass": "^1.74.1",
-    "tailwindcss": "^4.1.11",
+    "tailwindcss": "^4.1.12",
     "typescript": "^4.9.3"
   }
 }

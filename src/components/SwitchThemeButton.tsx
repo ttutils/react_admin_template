@@ -1,5 +1,5 @@
 import { IconMoon } from "@douyinfe/semi-icons";
-import { Button, Tooltip } from "@douyinfe/semi-ui";
+import { Button, Tooltip } from "@douyinfe/semi-ui-19";
 import { useState, useEffect } from "react";
 
 export default function SwitchThemeButton() {

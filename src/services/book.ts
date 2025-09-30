@@ -1,6 +1,6 @@
 import { AddBookParams, DeleteBookParams, ListBooksParams, UpdateBookParams } from '@/src/api/book/types';
 import { BookAPI } from '@/src/api/book';
-import { Toast } from '@douyinfe/semi-ui';
+import { Toast } from '@douyinfe/semi-ui-19';
 
 /** 书籍服务 */
 export const BookService = {

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Table, Button, Modal, Form, Input } from "@douyinfe/semi-ui";
+import { Table, Button, Modal, Form, Input } from "@douyinfe/semi-ui-19";
 import useService from "@/src/hooks/useService";
-import { ColumnProps } from "@douyinfe/semi-ui/lib/es/table";
-import { FormApi } from "@douyinfe/semi-ui/lib/es/form";
+import { ColumnProps } from "@douyinfe/semi-ui-19/lib/es/table";
+import { FormApi } from "@douyinfe/semi-ui-19/lib/es/form";
 import { BookService } from "@/src/services/book";
 import { IconRefresh } from "@douyinfe/semi-icons";
 import dayjs from "dayjs";
