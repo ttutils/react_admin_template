@@ -3,13 +3,9 @@ import adapterFetch from 'alova/fetch';
 import ReactHook from 'alova/react';
 import { getToken, removeToken } from "@/src/utils/auth";
 import { Toast } from "@douyinfe/semi-ui-19";
-import { APP_LOGIN_URI } from "@/src/config";
+import { APP_LOGIN_URI, NO_TOKEN_API_LIST } from "@/src/config";
 
 const isDev = process.env.NODE_ENV === 'development';
-
-const nonvalidateRequiredApi = [
-    '/api/user/login',
-]
 
 const alovaInstance = createAlova({
     requestAdapter: adapterFetch(),
@@ -18,7 +14,7 @@ const alovaInstance = createAlova({
     cacheFor: null,
     timeout: 30000,
     beforeRequest(method) {
-        if (!nonvalidateRequiredApi.includes(method.url)) {
+        if (!NO_TOKEN_API_LIST.includes(method.url)) {
             method.config.headers.Authorization = getToken();
         }
     },
@@ -31,9 +27,7 @@ const alovaInstance = createAlova({
                 window.location.href = APP_LOGIN_URI;
             }
             const json = await response.json();
-            if (isDev && response.status === 200) {
-                console.log(json)
-            }
+            if (isDev && response.status === 200) console.log(json);
             return json;
         },
         onError: (err, method) => {

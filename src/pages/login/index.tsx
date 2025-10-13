@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Form, Typography } from '@douyinfe/semi-ui-19';
 import { IconKey, IconUser } from '@douyinfe/semi-icons';
 import { APP_LOGIN_REDIRECT_URI, APP_NAME } from "@/src/config";
 import { UserService } from "@/src/services/user";
 import { useNavigate } from "react-router-dom";
 import { demoStatusStore } from "@/src/stores/useDemoStatusStore";
+import { checkToken } from "@/src/utils/checkToken";
 
 const {Text} = Typography;
 
@@ -21,6 +22,14 @@ const Login = () => {
         password = 'admin123456';
         remember_me = true;
     }
+
+    useEffect(() => {
+        // 登录页加载时检查 token
+        if (checkToken()) {
+            // token 有效，直接跳转主界面
+            navigate(APP_LOGIN_REDIRECT_URI);
+        }
+    }, [navigate]);
 
     // 使用Form组件管理表单状态
     const handleSubmit = async (values: any) => {
