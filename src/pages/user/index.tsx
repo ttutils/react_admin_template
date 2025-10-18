@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Table, Button, Modal, Form, Input } from "@douyinfe/semi-ui-19";
+import { Table, Button, Modal, Form, Input, Switch } from "@douyinfe/semi-ui-19";
 import useService from "@/src/hooks/useService";
 import { ColumnProps } from "@douyinfe/semi-ui-19/lib/es/table";
 import { FormApi } from "@douyinfe/semi-ui-19/lib/es/form";
@@ -7,13 +7,13 @@ import { IconRefresh } from "@douyinfe/semi-icons";
 import { UserService } from "@/src/services/user";
 import ChangePasswordModal from "@/src/components/ChangePasswordModal";
 import { AddUserParams } from "@/src/api/user/types";
+import { getUserid } from "@/src/utils/auth";
 
 const UserPage = () => {
     const [pageSize, setPageSize] = useState<number>(12);
     const [pageNum, setPage] = useState<number>(1);
-    const [queryParams, setQueryParams] = useState<{ username?: string; email?: string }>({});
-    const [usernameInput, setUsernameInput] = useState('');
-    const [emailInput, setEmailInput] = useState('');
+    const [queryParams, setQueryParams] = useState<{ username?: string; enable?: boolean }>({});
+    const [usernameInput, setUsernameInput] = useState<string>('');
     const serviceResponse = useService(() => UserService.list({
         page: pageNum,
         page_size: pageSize, ...queryParams
@@ -73,41 +73,19 @@ const UserPage = () => {
     };
 
     const columns: ColumnProps[] = [
+        {title: "id", width: '10%', dataIndex: "user_id"},
+        {title: "用户名", width: '30%', dataIndex: "username"},
         {
-            title: "id",
-            dataIndex: "user_id",
-            width: '10%',
-            render: (id: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{id}</span>
-                </div>
-            ),
-        },
-        {
-            title: "用户名",
-            dataIndex: "username",
+            title: "启用",
+            dataIndex: "enable",
             width: '30%',
-            render: (text: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
-        },
-        {
-            title: "邮箱",
-            dataIndex: "email",
-            width: '30%',
-            render: (text: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
+            render: (text: boolean) => (<Switch checked={text} disabled></Switch>),
         },
         {
             title: "操作",
             dataIndex: "actions",
             align: 'center',
-            render: (_text: string, record: any, _index: any) => {
+            render: (_text: string, record: any) => {
                 return (
                     <div className="flex items-center justify-center gap-2">
                         <Button type="primary" theme='solid' onClick={() => editInfo(record)}>编辑</Button>
@@ -131,33 +109,27 @@ const UserPage = () => {
         <div>
             <div className="flex flex-col gap-4 p-4">
                 <div className="flex justify-between items-center p-4 rounded-lg shadow-sm">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 h-full items-center">
+                        <span className="font-bold w-20">查询</span>
                         <Input
                             value={usernameInput}
                             onChange={value => setUsernameInput(value)}
                             placeholder='用户名'
                         ></Input>
-                        <Input
-                            value={emailInput}
-                            onChange={value => setEmailInput(value)}
-                            placeholder='邮箱'
-                        ></Input>
                         <Button type="primary" theme="solid" onClick={() => {
                             setQueryParams({
                                 username: usernameInput || undefined,
-                                email: emailInput || undefined
                             });
                             setPage(1);
                         }}>查询</Button>
                         <Button icon={<IconRefresh/>} type="primary" theme="solid" onClick={() => {
                             setQueryParams({});
-                            setUsernameInput('');
-                            setEmailInput('');
                             setPage(1);
                         }}>清空刷新</Button>
                     </div>
                     <div className="flex gap-2">
-                        <Button type="primary" theme="solid" onClick={openCreateModal}>新增</Button>
+                        <Button type="primary" theme="solid" onClick={openCreateModal}
+                                disabled={getUserid().toString() !== '1'}>新增</Button>
                     </div>
                 </div>
                 <div className="rounded-lg shadow-sm p-4">
@@ -169,7 +141,7 @@ const UserPage = () => {
                         bordered
                         pagination={{
                             pageSize,
-                            total: data?.total,
+                            total: typeof data?.total === "number" ? data?.total : 0,
                             currentPage: pageNum,
                             className: 'px-4 mt-4',
                             showSizeChanger: true,
@@ -206,10 +178,16 @@ const UserPage = () => {
                         label='用户名'
                         rules={[{required: true, message: '请输入用户名'}]}
                     />
-                    <Form.Input
-                        field='email'
-                        label='邮箱'
-                    />
+                    {modalType === 'edit' ? (
+                        <>
+                            {Number(modalRecord?.user_id) !== 1 && (
+                                <Form.Switch
+                                    field='enable'
+                                    label='启用'
+                                />
+                            )}
+                        </>
+                    ) : null}
                 </Form>
             </Modal>
             <ChangePasswordModal ref={changePasswordRef}/>

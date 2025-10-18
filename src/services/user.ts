@@ -22,6 +22,8 @@ export const UserService = {
                     total: resp.total,
                     page: params.page || 1
                 };
+            } else if (resp.code === 401) {
+                return {data: [], total: 0};
             }
             Toast.error(resp.msg || '获取列表失败');
             return {data: [], total: 0};
@@ -41,6 +43,8 @@ export const UserService = {
                 } else {
                     Toast.error('登录凭证缺失');
                 }
+            } else {
+                Toast.error(resp.msg || '登录失败');
             }
         } catch (error) {
             Toast.error('登录失败，请重试');

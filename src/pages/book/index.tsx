@@ -67,51 +67,11 @@ const BookPage = () => {
     };
 
     const columns: ColumnProps[] = [
-        {
-            title: "id",
-            dataIndex: "book_id",
-            render: (id: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{id}</span>
-                </div>
-            ),
-        },
-        {
-            title: "书名",
-            dataIndex: "title",
-            render: (text: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
-        },
-        {
-            title: "作者",
-            dataIndex: "author",
-            render: (text: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
-        },
-        {
-            title: "概述",
-            dataIndex: "summary",
-            render: (text: string, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
-        },
-        {
-            title: "出版年份",
-            dataIndex: "year",
-            render: (text: number, record: { cover: string }) => (
-                <div className="flex items-center">
-                    <span className="font-medium">{text}</span>
-                </div>
-            ),
-        },
+        {title: "id", dataIndex: "book_id"},
+        {title: "书名", dataIndex: "title"},
+        {title: "作者", dataIndex: "author"},
+        {title: "概述", dataIndex: "summary"},
+        {title: "出版年份", dataIndex: "year"},
         {
             title: "操作",
             dataIndex: "actions",

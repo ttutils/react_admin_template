@@ -9,12 +9,12 @@ export interface LoginParams {
 export interface AddUserParams {
   username: string;
   password: string;
-  email?: string;
+  enable?: boolean;
 }
 
 export interface UpdateUserParams {
   username?: string;
-  email?: string;
+  enable?: boolean;
 }
 
 export interface LoginResp extends CommonResp {
@@ -27,13 +27,12 @@ export interface UserListParams {
   page?: number;
   page_size?: number;
   username?: string;
-  email?: string;
 }
 
 export interface UserInfo {
   user_id: number;
   username: string;
-  email?: string;
+  enable?: boolean;
 }
 
 export interface UserListResp extends CommonResp {
@@ -61,6 +60,6 @@ export interface UserInfoResp extends CommonResp {
   data?: {
     user_id: string;
     username: string;
-    email?: string;
+    enable?: boolean;
   }
 }
