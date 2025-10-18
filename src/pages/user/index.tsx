@@ -164,7 +164,7 @@ const UserPage = () => {
                     <Table
                         loading={loading}
                         columns={columns}
-                        dataSource={data?.data}
+                        dataSource={data?.data || []}
                         size="small"
                         bordered
                         pagination={{
