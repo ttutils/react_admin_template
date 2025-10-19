@@ -18,7 +18,7 @@ const ChangePasswordModal = forwardRef<ChangePasswordModalRef, ChangePasswordMod
         const [visible, setVisible] = useState(false);
         const [okLoading, setOkLoading] = useState(false);
         const userIdRef = useRef<string>('');
-        const formApi = useRef<FormApi>();
+        const formApi = useRef<FormApi>(null);
 
         useImperativeHandle(ref, () => ({
             open: (userId: string) => {

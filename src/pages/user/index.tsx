@@ -24,7 +24,7 @@ const UserPage = () => {
     const [modalType, setModalType] = useState<'create' | 'edit'>('create');
     const [modalRecord, setModalRecord] = useState<any>();
     const [okLoading, setOkLoading] = useState(false)
-    const formApi = useRef<FormApi>();
+    const formApi = useRef<FormApi>(null);
     const changePasswordRef = useRef<{ open: (userId: string) => void }>(null);
 
     // 显示弹窗

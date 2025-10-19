@@ -21,7 +21,7 @@ export default function Layout() {
     const [pathKey, setPathKey] = useState<string[]>([]);
     const changePasswordRef = useRef<{ open: (userId: string) => void }>(null);
     const [visible, setVisible] = useState(false);
-    const formApi = useRef<FormApi>();
+    const formApi = useRef<FormApi>(null);
     const [okLoading, setOkLoading] = useState(false);
     const [modalRecord, setModalRecord] = useState<any>();
 
