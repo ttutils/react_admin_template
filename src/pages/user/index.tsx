@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Table, Button, Modal, Form, Input, Switch } from "@douyinfe/semi-ui-19";
+import { Table, Button, Modal, Form, Input, Switch, Select } from "@douyinfe/semi-ui-19";
 import useService from "@/src/hooks/useService";
 import { ColumnProps } from "@douyinfe/semi-ui-19/lib/es/table";
 import { FormApi } from "@douyinfe/semi-ui-19/lib/es/form";
@@ -14,6 +14,7 @@ const UserPage = () => {
     const [pageNum, setPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<{ username?: string; enable?: boolean }>({});
     const [usernameInput, setUsernameInput] = useState<string>('');
+    const [enableInput, setEnableInput] = useState<boolean | undefined>(undefined);
     const serviceResponse = useService(() => UserService.list({
         page: pageNum,
         page_size: pageSize, ...queryParams
@@ -116,14 +117,25 @@ const UserPage = () => {
                             onChange={value => setUsernameInput(value)}
                             placeholder='用户名'
                         ></Input>
+                        <Select
+                            value={enableInput === undefined ? undefined : (enableInput ? 'true' : 'false')}
+                            onChange={value => setEnableInput(value === 'true')}
+                            placeholder='启用状态'
+                            style={{width: 150}}
+                        >
+                            <Select.Option value='true'>启用</Select.Option>
+                            <Select.Option value='false'>禁用</Select.Option>
+                        </Select>
                         <Button type="primary" theme="solid" onClick={() => {
                             setQueryParams({
                                 username: usernameInput || undefined,
+                                enable: enableInput
                             });
                             setPage(1);
                         }}>查询</Button>
                         <Button icon={<IconRefresh/>} type="primary" theme="solid" onClick={() => {
                             setQueryParams({});
+                            setUsernameInput('');
                             setPage(1);
                         }}>清空刷新</Button>
                     </div>
