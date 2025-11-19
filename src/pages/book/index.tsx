@@ -96,12 +96,30 @@ const BookPage = () => {
                             value={titleInput}
                             onChange={value => setTitleInput(value)}
                             placeholder='书名'
-                        ></Input>
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setQueryParams({
+                                        title: titleInput || undefined,
+                                        author: authorInput || undefined
+                                    });
+                                    setPage(1);
+                                }
+                            }}
+                        />
                         <Input
                             value={authorInput}
                             onChange={value => setAuthorInput(value)}
                             placeholder='作者'
-                        ></Input>
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setQueryParams({
+                                        title: titleInput || undefined,
+                                        author: authorInput || undefined
+                                    });
+                                    setPage(1);
+                                }
+                            }}
+                        />
                         <Button type="primary" theme="solid" onClick={() => {
                             setQueryParams({
                                 title: titleInput || undefined,
