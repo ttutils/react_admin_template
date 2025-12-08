@@ -34,8 +34,19 @@ export default defineConfig({
         }
     },
     output: {
+        module: true,
+        legalComments: 'none',
         distPath: {
             root: 'dist',
+            js: '',
+            jsAsync: '',
+            css: '',
+            cssAsync: '',
+            image: '',
+            font: '',
+            svg: '',
+            favicon: '',
+            assets: '',
         },
         inlineScripts({size}) {
             return size < 10 * 1000;
@@ -47,6 +58,9 @@ export default defineConfig({
             strategy: 'split-by-size',
             minSize: 30000, // 30k
             maxSize: 500000, // 50k
+        },
+        printFileSize: {
+            diff: true,
         },
     },
 });
