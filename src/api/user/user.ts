@@ -1,5 +1,6 @@
 import { request } from '@/src/utils/request';
 import {
+    CaptchaResp,
     LoginParams,
     LoginResp,
     UserListParams,
@@ -19,6 +20,11 @@ import {
 /** 用户登录 */
 export async function Login(params: LoginParams) {
     return request.Post<LoginResp>('/api/user/login', params);
+}
+
+/** 生成验证码 */
+export async function GenerateCaptcha() {
+    return request.Get<CaptchaResp>('/api/user/captcha');
 }
 
 /** 添加用户 */

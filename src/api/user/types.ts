@@ -56,6 +56,21 @@ export interface AddUserResp extends CommonResp {}
 
 export interface UpdateUserResp extends CommonResp {}
 
+export interface CaptchaResp extends CommonResp {
+  data?: {
+    id: string;
+    base64_image: string;
+  };
+}
+
+export interface LoginParams {
+  username: string;
+  password: string;
+  remember_me?: boolean;
+  captcha?: string;
+  captcha_id?: string;
+}
+
 export interface UserInfoResp extends CommonResp {
   data?: {
     user_id: string;
