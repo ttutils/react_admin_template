@@ -2,7 +2,7 @@ import { FaRegCopyright } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import { Layout } from "@douyinfe/semi-ui-19";
 import { APP_START_YEAR } from "@/src/config";
-import { ServerInfoService } from "@/src/services/server_info";
+import { SimpleApiService } from "@/src/services/simple_api";
 
 export default function Index() {
     const year = new Date().getFullYear();
@@ -10,12 +10,12 @@ export default function Index() {
 
     useEffect(() => {
         const getServerInfo = async () => {
-            const resp = await ServerInfoService.get();
-            if (resp.data.version) {
+            const resp = await SimpleApiService.get_server_info();
+            if (resp.data && 'version' in resp.data) {
                 setVersion(resp.data.version);
             }
         }
-        getServerInfo();
+        getServerInfo().then(r => {});
     }, [version]);
     return (
         <Layout.Footer className='flex items-center justify-center w-full gap-2'>
