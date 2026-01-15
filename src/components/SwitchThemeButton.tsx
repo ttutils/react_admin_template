@@ -1,43 +1,119 @@
-import { IconMoon } from "@douyinfe/semi-icons";
+import { IconMoon, IconSun, IconMonitorStroked } from "@douyinfe/semi-icons";
 import { Button, Tooltip } from "@douyinfe/semi-ui-19";
 import { useState, useEffect } from "react";
 
+type ThemeMode = 'light' | 'dark' | 'system';
+
 export default function SwitchThemeButton() {
     // 从 localStorage 初始化状态
-    const [isDark, setIsDark] = useState<boolean>(() => {
+    const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
         const savedMode = localStorage.getItem('theme-mode');
-        return savedMode === 'dark';
+        return (savedMode as ThemeMode) || 'system';
     });
 
-    useEffect(() => {
-        // 组件加载时应用存储的主题
+    // 获取系统主题偏好
+    const getSystemTheme = (): 'light' | 'dark' => {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+
+    // 计算当前实际主题
+    const getCurrentTheme = (): 'light' | 'dark' => {
+        if (themeMode === 'system') {
+            return getSystemTheme();
+        }
+        return themeMode;
+    };
+
+    // 应用主题
+    const applyTheme = (theme: 'light' | 'dark') => {
         const body = document.body;
-        if (isDark) {
+        if (theme === 'dark') {
             body.setAttribute("theme-mode", "dark");
         } else {
             body.removeAttribute("theme-mode");
         }
-    }, []); // 空依赖数组表示只在组件挂载时执行一次
+    };
 
+    // 组件加载时应用主题
+    useEffect(() => {
+        applyTheme(getCurrentTheme());
+    }, []);
+
+    // 监听主题模式变化
+    useEffect(() => {
+        applyTheme(getCurrentTheme());
+    }, [themeMode]);
+
+    // 监听系统主题变化
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = () => {
+            if (themeMode === 'system') {
+                applyTheme(getCurrentTheme());
+            }
+        };
+
+        // 添加监听器
+        mediaQuery.addEventListener('change', handleChange);
+
+        // 清理函数
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, [themeMode]);
+
+    // 切换主题模式
     const changeMode = () => {
-        const newMode = !isDark;
-        setIsDark(newMode);
-
-        const body = document.body;
-        if (newMode) {
-            body.setAttribute("theme-mode", "dark");
-            localStorage.setItem('theme-mode', 'dark');
+        let newMode: ThemeMode;
+        if (themeMode === 'light') {
+            newMode = 'dark';
+        } else if (themeMode === 'dark') {
+            newMode = 'system';
         } else {
-            body.removeAttribute("theme-mode");
-            localStorage.removeItem('theme-mode');
+            newMode = 'light';
+        }
+        setThemeMode(newMode);
+        localStorage.setItem('theme-mode', newMode);
+    };
+
+    // 获取当前模式显示文本
+    const getModeText = (): string => {
+        if (themeMode === 'light') {
+            return '亮色';
+        } else if (themeMode === 'dark') {
+            return '暗色';
+        } else {
+            return '系统';
+        }
+    };
+
+    // 获取下一个模式显示文本
+    const getNextModeText = (): string => {
+        if (themeMode === 'light') {
+            return '暗色';
+        } else if (themeMode === 'dark') {
+            return '系统';
+        } else {
+            return '亮色';
+        }
+    };
+
+    // 获取当前模式图标
+    const getModeIcon = () => {
+        if (themeMode === 'light') {
+            return <IconMoon size="extra-large"/>;
+        } else if (themeMode === 'dark') {
+            return <IconSun size="extra-large"/>;
+        } else {
+            return <IconMonitorStroked size="extra-large"/>;
         }
     };
 
     const IconButtons = [
         {
-            icon: <IconMoon size="extra-large"/>,
+            icon: getModeIcon(),
             event: () => changeMode(),
-            tip: `切换到${isDark ? "亮色" : "暗色"}模式`,
+            tip: `当前模式: ${getModeText()}，点击切换到${getNextModeText()}模式`,
         },
     ];
 
@@ -46,22 +122,14 @@ export default function SwitchThemeButton() {
         return (
             <div className="flex gap-2 mr-4">
                 {IconButtons.map((item, index) => {
-                    return item?.tip ? (
-                        <Tooltip content={item?.tip} key={index}>
-                            <Button
-                                theme="borderless"
-                                icon={item.icon}
-                                onClick={item.event}
-                                type="tertiary"
-                            />
-                        </Tooltip>
-                    ) : (
+                    return (
                         <Button
                             key={index}
                             theme="borderless"
                             icon={item.icon}
                             onClick={item.event}
                             type="tertiary"
+                            title={item.tip}
                         />
                     );
                 })}
