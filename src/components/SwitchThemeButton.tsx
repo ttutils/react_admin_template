@@ -1,5 +1,5 @@
 import { IconMoon, IconSun, IconMonitorStroked } from "@douyinfe/semi-icons";
-import { Button, Tooltip } from "@douyinfe/semi-ui-19";
+import { Button } from "@douyinfe/semi-ui-19";
 import { useState, useEffect } from "react";
 
 type ThemeMode = 'light' | 'dark' | 'system';
