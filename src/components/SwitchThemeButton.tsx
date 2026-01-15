@@ -101,9 +101,9 @@ export default function SwitchThemeButton() {
     // 获取当前模式图标
     const getModeIcon = () => {
         if (themeMode === 'light') {
-            return <IconMoon size="extra-large"/>;
-        } else if (themeMode === 'dark') {
             return <IconSun size="extra-large"/>;
+        } else if (themeMode === 'dark') {
+            return <IconMoon size="extra-large"/>;
         } else {
             return <IconMonitorStroked size="extra-large"/>;
         }
