@@ -116,12 +116,14 @@ const UserPage = () => {
                             value={usernameInput}
                             onChange={value => setUsernameInput(value)}
                             placeholder='用户名'
+                            showClear
                         ></Input>
                         <Select
                             value={enableInput === undefined ? undefined : (enableInput ? 'true' : 'false')}
                             onChange={value => setEnableInput(value === 'true')}
                             placeholder='启用状态'
                             style={{width: 150}}
+                            showClear
                         >
                             <Select.Option value='true'>启用</Select.Option>
                             <Select.Option value='false'>禁用</Select.Option>
@@ -189,6 +191,7 @@ const UserPage = () => {
                         field='username'
                         label='用户名'
                         rules={[{required: true, message: '请输入用户名'}]}
+                        showClear
                     />
                     {modalType === 'edit' ? (
                         <>

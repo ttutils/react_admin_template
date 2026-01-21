@@ -105,6 +105,7 @@ const BookPage = () => {
                                     setPage(1);
                                 }
                             }}
+                            showClear
                         />
                         <Input
                             value={authorInput}
@@ -119,6 +120,7 @@ const BookPage = () => {
                                     setPage(1);
                                 }
                             }}
+                            showClear
                         />
                         <Button type="primary" theme="solid" onClick={() => {
                             setQueryParams({
@@ -183,22 +185,26 @@ const BookPage = () => {
                         field='title'
                         label='书名'
                         rules={[{required: true, message: '请输入书名'}]}
+                        showClear
                     />
                     <Form.Input
                         field='author'
                         label='作者'
                         rules={[{required: true, message: '请输入作者'}]}
+                        showClear
                     />
                     <Form.Input
                         field='summary'
                         label='概述'
                         rules={[{required: true, message: '请输入概述'}]}
+                        showClear
                     />
                     <Form.DatePicker
                         field='year'
                         label='出版年份'
                         type='month'
                         rules={[{required: true, message: '请选择年份'}]}
+                        showClear
                         insetInput
                     />
                 </Form>
