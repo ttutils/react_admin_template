@@ -9,27 +9,27 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.90.1",
-    "@douyinfe/semi-illustrations": "^2.90.1",
-    "@douyinfe/semi-ui-19": "^2.90.1",
-    "alova": "^3.4.1",
+    "@douyinfe/semi-icons": "^2.90.13",
+    "@douyinfe/semi-illustrations": "^2.90.13",
+    "@douyinfe/semi-ui-19": "^2.90.13",
+    "alova": "^3.5.0",
     "jwt-decode": "^4.0.0",
-    "motion": "^12.23.26",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "motion": "^12.30.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.11.0",
-    "zustand": "^5.0.9"
+    "react-router-dom": "^7.13.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.7.1",
-    "@rsbuild/plugin-react": "^1.4.2",
-    "@rsbuild/plugin-sass": "^1.4.0",
+    "@rsbuild/core": "2.0.0-beta.1",
+    "@rsbuild/plugin-react": "^1.4.5",
+    "@rsbuild/plugin-sass": "^1.5.0",
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^24.10.4",
-    "@types/react": "^19.2.7",
+    "@types/node": "^24.10.9",
+    "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
-    "sass": "^1.97.1",
+    "sass": "^1.97.3",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }

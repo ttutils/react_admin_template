@@ -32,7 +32,7 @@ export default function Layout() {
     };
 
     const logout = () => {
-        removeToken();
+        UserService.logout();
         navigate(APP_LOGIN_URI);
     };
 
