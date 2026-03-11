@@ -9,28 +9,28 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.90.13",
-    "@douyinfe/semi-illustrations": "^2.90.13",
-    "@douyinfe/semi-ui-19": "^2.90.13",
-    "alova": "^3.5.0",
+    "@douyinfe/semi-icons": "^2.92.2",
+    "@douyinfe/semi-icons-lab": "^2.92.2",
+    "@douyinfe/semi-illustrations": "^2.92.2",
+    "@douyinfe/semi-ui": "^2.92.2",
+    "alova": "^3.5.1",
     "jwt-decode": "^4.0.0",
-    "motion": "^12.30.0",
+    "motion": "^12.35.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^7.13.0",
+    "react-router-dom": "^7.13.1",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@rsbuild/core": "2.0.0-beta.1",
+    "@rsbuild/core": "2.0.0-beta.8",
     "@rsbuild/plugin-react": "^1.4.5",
     "@rsbuild/plugin-sass": "^1.5.0",
-    "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^24.10.9",
-    "@types/react": "^19.2.10",
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "sass": "^1.97.3",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "tailwindcss": "^4.2.1",
+    "typescript": "6.0.0-dev.20260213"
   }
 }
