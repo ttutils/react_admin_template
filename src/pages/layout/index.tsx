@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { defaultOpenKeys, MenuRoutes } from "@/src/router/routes";
 import { OnSelectedData } from "@douyinfe/semi-ui/lib/es/navigation";
-import { getUserid, getUsername, removeToken } from "@/src/utils/auth";
+import { getUserid, getUsername } from "@/src/utils/auth";
 import { APP_LOGIN_REDIRECT_URI, APP_LOGIN_URI, APP_NAME } from "@/src/config";
 import Footer from "@/src/pages/layout/Footer";
 import ChangePasswordModal from "@/src/components/ChangePasswordModal";
@@ -84,6 +84,12 @@ export default function Layout() {
                         header={{
                             logo: (
                                 <div
+                                    onMouseDown={(e) => {
+                                        if (e.button === 1) {
+                                            e.preventDefault();
+                                            window.open(APP_LOGIN_REDIRECT_URI, '_blank');
+                                        }
+                                    }}
                                     onClick={() => navigate(APP_LOGIN_REDIRECT_URI)}
                                     style={{cursor: 'pointer', display: 'flex', alignItems: 'center'}}
                                 >
@@ -92,6 +98,12 @@ export default function Layout() {
                             ),
                             text: (
                                 <div
+                                    onMouseDown={(e) => {
+                                        if (e.button === 1) {
+                                            e.preventDefault();
+                                            window.open(APP_LOGIN_REDIRECT_URI, '_blank');
+                                        }
+                                    }}
                                     onClick={() => navigate(APP_LOGIN_REDIRECT_URI)}
                                     style={{cursor: 'pointer', fontWeight: 500}}
                                 >
@@ -121,7 +133,10 @@ export default function Layout() {
                                 overflow: 'auto',
                                 position: 'sticky',
                                 top: 60,
-                                zIndex: 10
+                                zIndex: 10,
+                                width: '250px',
+                                minWidth: '250px',
+                                maxWidth: '250px'
                             }}
                         >
                             <Nav
@@ -130,13 +145,25 @@ export default function Layout() {
                                 style={{height: '100%', minHeight: 'calc(100vh - 120px)'}}
                                 selectedKeys={pathKey}
                                 items={MenuRoutes}
-                                defaultOpenKeys={defaultOpenKeys}
                                 onSelect={(data) => onSelect(data)}
+                                defaultOpenKeys={defaultOpenKeys}
+                                renderWrapper={({itemElement, props}) => {
+                                    return React.cloneElement(itemElement, {
+                                        onMouseDown: (e) => {
+                                            if (e.button === 1) {
+                                                e.preventDefault();
+                                                if (props.itemKey) {
+                                                    window.open(props.itemKey, '_blank');
+                                                }
+                                            }
+                                        }
+                                    });
+                                }}
                                 footer={{
                                     collapseButton: true,
                                 }}/>
                         </Sider>
-                        <Content className="overflow-auto">
+                        <Content className="overflow-auto" style={{flex: 1, minWidth: 0}}>
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={location.pathname}
