@@ -114,6 +114,7 @@ const UserPage = () => {
                             onChange={value => setEnableInput(value === 'true')}
                             placeholder='启用状态'
                             style={{width: 250}}
+                            filter
                         >
                             <Select.Option value='true'>启用</Select.Option>
                             <Select.Option value='false'>禁用</Select.Option>
@@ -169,6 +170,7 @@ const UserPage = () => {
                 onCancel={() => setVisible(false)}
                 onOk={handleSubmit}
                 okButtonProps={{loading: okLoading}}
+                maskClosable={false}
             >
                 <Form
                     labelPosition='left'

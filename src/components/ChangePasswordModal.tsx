@@ -48,6 +48,7 @@ const ChangePasswordModal = forwardRef<ChangePasswordModalRef, ChangePasswordMod
                 onCancel={() => setVisible(false)}
                 onOk={handleSubmit}
                 okButtonProps={{loading: okLoading}}
+                maskClosable={false}
             >
                 <Form
                     labelPosition="left"

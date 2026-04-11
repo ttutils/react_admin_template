@@ -192,6 +192,7 @@ export default function Layout() {
                 onCancel={() => setVisible(false)}
                 onOk={handleSubmit}
                 okButtonProps={{loading: okLoading}}
+                maskClosable={false}
             >
                 <Form
                     labelPosition='left'

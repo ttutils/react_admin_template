@@ -173,6 +173,7 @@ const BookPage = () => {
                 onCancel={() => setVisible(false)}
                 onOk={handleSubmit}
                 okButtonProps={{loading: okLoading}}
+                maskClosable={false}
             >
                 <Form
                     labelPosition='left'
