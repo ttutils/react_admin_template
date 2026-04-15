@@ -1,14 +1,14 @@
 import { request } from "@/src/utils/request";
 import { CommonResp } from "@/src/api/common.type";
 
-interface GetServerInfoResp extends CommonResp  {
+export interface GetServerInfoResp extends CommonResp {
     data: {
         name: string;
         version: string;
     }
 }
 
-interface GetDemoResp extends CommonResp  {
+interface GetDemoResp extends CommonResp {
     data: {
         is_demo: boolean;
     }
