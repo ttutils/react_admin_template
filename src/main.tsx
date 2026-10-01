@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import '@douyinfe/semi-ui/react19-adapter';
 import App from './App';
 import './index.css';
 import { SimpleApiService } from "@/src/services/simple_api";

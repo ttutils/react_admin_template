@@ -6,31 +6,35 @@
   "scripts": {
     "dev": "rsbuild dev",
     "build": "rsbuild build",
-    "preview": "rsbuild preview"
+    "preview": "rsbuild preview",
+    "lint": "rslint src rsbuild.config.ts --max-warnings 0",
+    "lint:fix": "rslint src rsbuild.config.ts --fix",
+    "typecheck": "rslint src rsbuild.config.ts --type-check-only"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.92.2",
-    "@douyinfe/semi-icons-lab": "^2.92.2",
-    "@douyinfe/semi-illustrations": "^2.92.2",
-    "@douyinfe/semi-ui": "^2.92.2",
-    "alova": "^3.5.1",
+    "@douyinfe/semi-icons": "^2.103.0",
+    "@douyinfe/semi-icons-lab": "^2.103.0",
+    "@douyinfe/semi-illustrations": "^2.103.0",
+    "@douyinfe/semi-ui": "^2.103.0",
+    "alova": "^3.5.5",
     "jwt-decode": "^4.0.0",
-    "motion": "^12.35.2",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.1",
-    "zustand": "^5.0.11"
+    "motion": "^13.4.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@rsbuild/core": "2.0.0-beta.8",
-    "@rsbuild/plugin-react": "^1.4.5",
-    "@rsbuild/plugin-sass": "^1.5.0",
-    "@tailwindcss/postcss": "^4.2.1",
-    "@types/node": "^24.12.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "sass": "^1.97.3",
-    "tailwindcss": "^4.2.1",
-    "typescript": "6.0.0-dev.20260213"
+    "@rsbuild/core": "^2.2.11",
+    "@rsbuild/plugin-react": "^2.1.1",
+    "@rsbuild/plugin-sass": "^2.0.1",
+    "@rsbuild/plugin-tailwindcss": "^2.0.3",
+    "@rslint/core": "0.9.4",
+    "@types/node": "^24.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "sass": "^1.105.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
   }
 }

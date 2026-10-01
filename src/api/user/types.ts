@@ -4,6 +4,8 @@ export interface LoginParams {
   username: string;
   password: string;
   remember_me?: boolean;
+  captcha?: string;
+  captcha_id?: string;
 }
 
 export interface AddUserParams {
@@ -23,16 +25,17 @@ export interface LoginResp extends CommonResp {
   };
 }
 
-export interface LogoutResp extends CommonResp {}
+export type LogoutResp = CommonResp;
 
 export interface UserListParams {
   page?: number;
   page_size?: number;
   username?: string;
+  enable?: boolean;
 }
 
 export interface UserInfo {
-  user_id: number;
+  user_id: string;
   username: string;
   enable?: boolean;
 }
@@ -50,13 +53,13 @@ export interface ChangePasswdParams {
   password: string;
 }
 
-export interface DeleteUserResp extends CommonResp {}
+export type DeleteUserResp = CommonResp;
 
-export interface ChangePasswdResp extends CommonResp {}
+export type ChangePasswdResp = CommonResp;
 
-export interface AddUserResp extends CommonResp {}
+export type AddUserResp = CommonResp;
 
-export interface UpdateUserResp extends CommonResp {}
+export type UpdateUserResp = CommonResp;
 
 export interface CaptchaResp extends CommonResp {
   data?: {
@@ -65,18 +68,6 @@ export interface CaptchaResp extends CommonResp {
   };
 }
 
-export interface LoginParams {
-  username: string;
-  password: string;
-  remember_me?: boolean;
-  captcha?: string;
-  captcha_id?: string;
-}
-
 export interface UserInfoResp extends CommonResp {
-  data?: {
-    user_id: string;
-    username: string;
-    enable?: boolean;
-  }
+  data?: UserInfo;
 }

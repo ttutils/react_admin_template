@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode, type JwtPayload} from 'jwt-decode';
 import { getToken, removeToken } from '@/src/utils/auth';
 import { APP_LOGIN_URI, CHECK_TOKEN_TIME_INTERVAL } from '@/src/config';
 import { Toast } from "@douyinfe/semi-ui";
@@ -8,9 +8,9 @@ import { Toast } from "@douyinfe/semi-ui";
  */
 function isTokenExpired(token: string): boolean {
     try {
-        const decoded: any = jwtDecode(token);
+        const decoded = jwtDecode<JwtPayload>(token);
         const now = Date.now() / 1000;
-        return (decoded.exp && decoded.exp < now);
+        return typeof decoded.exp === 'number' && decoded.exp < now;
     } catch {
         return true; // 无法解析的 token 视为无效
     }
@@ -31,7 +31,7 @@ export function checkToken(): boolean {
 /**
  * 启动全局 token 监控，每5秒检测一次
  */
-let tokenTimer: NodeJS.Timeout | null = null;
+let tokenTimer: ReturnType<typeof setInterval> | null = null;
 
 export function startTokenWatcher() {
     if (tokenTimer) return; // 避免重复启动

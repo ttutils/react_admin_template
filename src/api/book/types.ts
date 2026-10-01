@@ -7,13 +7,13 @@ export interface AddBookParams {
   summary?: string;
 }
 
-export interface AddBookResp extends CommonResp {}
+export type AddBookResp = CommonResp;
 
 export interface DeleteBookParams {
   book_id: string;
 }
 
-export interface DeleteBookResp extends CommonResp {}
+export type DeleteBookResp = CommonResp;
 
 export interface ListBooksParams {
   page?: number;
@@ -42,4 +42,4 @@ export interface UpdateBookParams {
   summary?: string;
 }
 
-export interface UpdateBookResp extends CommonResp {}
+export type UpdateBookResp = CommonResp;

@@ -1,73 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Typography } from '@douyinfe/semi-ui';
-import { IconKey, IconUser } from '@douyinfe/semi-icons';
-import { APP_LOGIN_REDIRECT_URI, APP_NAME } from "@/src/config";
-import { UserService } from "@/src/services/user";
-import { useNavigate } from "react-router-dom";
-import { demoStatusStore } from "@/src/stores/useDemoStatusStore";
-import { checkToken } from "@/src/utils/checkToken";
+import React, {useCallback, useEffect, useState} from 'react';
+import {Button, Form, Spin, Typography} from '@douyinfe/semi-ui';
+import {IconKey, IconRefresh, IconSemiLogo, IconUser} from '@douyinfe/semi-icons';
+import {APP_LOGIN_REDIRECT_URI, APP_NAME} from '@/src/config';
+import {UserService} from '@/src/services/user';
+import {useNavigate} from 'react-router-dom';
+import {demoStatusStore} from '@/src/stores/useDemoStatusStore';
+import {authStore} from '@/src/stores/useAuthStore';
+import {checkToken} from '@/src/utils/checkToken';
 
 const {Text} = Typography;
+const isDevelopment = import.meta.env.DEV;
+
+interface LoginFormValues {
+    username: string;
+    password: string;
+    captcha: string;
+    remember_me?: boolean;
+}
 
 const Login = () => {
     const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
-    const [captchaId, setCaptchaId] = useState<string>('');
-    const [captchaImage, setCaptchaImage] = useState<string>('');
-    const isDemo: boolean = demoStatusStore.getState().is_demo
-    let username = '';
-    let password = '';
-    let remember_me = true;
+    const [loading, setLoading] = useState(false);
+    const [captchaLoading, setCaptchaLoading] = useState(false);
+    const [captchaId, setCaptchaId] = useState('');
+    const [captchaImage, setCaptchaImage] = useState('');
+    const isDemo = demoStatusStore(state => state.is_demo);
+    const [hasHydrated, setHasHydrated] = useState(authStore.persist.hasHydrated());
+    const defaultCredentials = isDemo || isDevelopment;
 
-    if (isDemo || process.env.NODE_ENV !== 'production') {
-        username = 'admin';
-        password = 'admin123456';
-    }
-
-    // 生成验证码
-    const generateCaptcha = async () => {
-        const captchaData = await UserService.getCaptcha();
-        if (captchaData) {
-            setCaptchaId(captchaData.id);
-            setCaptchaImage(captchaData.base64_image);
+    const generateCaptcha = useCallback(async () => {
+        setCaptchaLoading(true);
+        try {
+            const captchaData = await UserService.getCaptcha();
+            if (captchaData) {
+                setCaptchaId(captchaData.id);
+                setCaptchaImage(captchaData.base64_image);
+            }
+        } finally {
+            setCaptchaLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        // 登录页加载时检查 token
-        if (checkToken()) {
-            // token 有效，直接跳转主界面
-            navigate(APP_LOGIN_REDIRECT_URI);
-        } else {
-            // 生成验证码
-            generateCaptcha();
-        }
-    }, [navigate]);
+        const unsubscribe = authStore.persist.onFinishHydration(() => setHasHydrated(true));
+        if (authStore.persist.hasHydrated()) setHasHydrated(true);
+        else void authStore.persist.rehydrate();
+        return unsubscribe;
+    }, []);
 
-    // 使用Form组件管理表单状态
-    const handleSubmit = async (values: any) => {
+    useEffect(() => {
+        if (!hasHydrated) return;
+        if (checkToken()) {
+            navigate(APP_LOGIN_REDIRECT_URI, {replace: true});
+        } else {
+            void generateCaptcha();
+        }
+    }, [generateCaptcha, hasHydrated, navigate]);
+
+    const handleSubmit = async (values: LoginFormValues) => {
         setLoading(true);
-        // 添加验证码信息到登录参数
-        const loginParams = {
-            ...values,
-            captcha_id: captchaId,
-            captcha: values.captcha
-        };
-        await UserService.login(loginParams);
-        navigate(APP_LOGIN_REDIRECT_URI);
+        try {
+            const success = await UserService.login({
+                ...values,
+                remember_me: values.remember_me !== false,
+                captcha_id: captchaId,
+            });
+            if (success) navigate(APP_LOGIN_REDIRECT_URI, {replace: true});
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div
-            className='flex flex-col gap-6 p-8 rounded-lg w-[600px] min-h-[500px]'
-            style={{
-                border: '1px solid var(--semi-color-border)',
-                backgroundColor: 'var(--semi-color-bg-1)', // 自动适配深色模式
-            }}
-        >
-            <div className="flex flex-col items-center mb-6">
-                <Text className="text-3xl font-bold text-[--semi-color-primary]">欢迎登录 {APP_NAME}</Text>
-                <Text className="text-sm text-[--semi-color-text-2] mt-2">请输入您的账号和密码</Text>
+        <div className="w-[440px] max-w-full rounded-lg border border-(--semi-color-border) bg-(--semi-color-bg-1) p-8 shadow-[0_18px_48px_rgba(24,32,47,0.1)] [body[theme-mode=dark]_&]:shadow-[0_18px_48px_rgba(0,0,0,0.28)]">
+            <div className="mb-6 flex items-center gap-3">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-(--semi-color-primary-light-default) text-(--semi-color-primary)">
+                    <IconSemiLogo className="size-7!" aria-hidden="true"/>
+                </div>
+                <div className="min-w-0">
+                    <Typography.Title heading={3} className="m-0! truncate text-[23px]! leading-[31px]! tracking-normal!">
+                        {APP_NAME}
+                    </Typography.Title>
+                    <Text type="tertiary" className="mt-0.5 block">管理后台</Text>
+                </div>
             </div>
 
             <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -77,16 +92,15 @@ const Login = () => {
                     prefix={<IconUser/>}
                     showClear
                     placeholder="请输入用户名"
-                    initValue={username}
+                    initValue={defaultCredentials ? 'admin' : ''}
                     rules={[
                         {required: true, message: '账号不能为空'},
                         {
                             pattern: /^(?:[\w-]+@[\w-]+\.[\w-]{2,4}|[a-zA-Z0-9._-]{4,50})$/,
-                            message: '请输入有效用户名'
-                        }
+                            message: '请输入有效用户名',
+                        },
                     ]}
                 />
-
                 <Form.Input
                     field="password"
                     label="密码"
@@ -94,67 +108,50 @@ const Login = () => {
                     prefix={<IconKey/>}
                     showClear
                     placeholder="请输入密码"
-                    initValue={password}
+                    initValue={defaultCredentials ? 'admin123456' : ''}
                     rules={[
                         {required: true, message: '密码不能为空'},
-                        {min: 6, message: '密码至少6位字符'}
+                        {min: 6, message: '密码至少6位字符'},
                     ]}
                 />
 
-                <div className="flex gap-4">
-                    <div className="flex-1">
+                <div className="grid grid-cols-[minmax(0,1fr)_132px] items-end gap-3">
+                    <div className="min-w-0">
                         <Form.Input
                             field="captcha"
                             label="验证码"
-                            initValue={process.env.NODE_ENV !== 'production' ? 'a' : ''}
+                            initValue={isDevelopment ? 'a' : ''}
                             placeholder="请输入验证码"
-                            rules={[
-                                {required: true, message: '验证码不能为空'}
-                            ]}
+                            rules={[{required: true, message: '验证码不能为空'}]}
                             showClear
                         />
                     </div>
                     <div className="flex items-end pb-3">
-                        <div
-                            style={{
-                                backgroundColor: '#ffffff',
-                                padding: '2px',
-                                borderRadius: '4px',
-                                display: 'inline-block',
-                                border: '1px solid var(--semi-color-border)',
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                            }}
+                        <Button
+                            htmlType="button"
+                            theme="borderless"
+                            type="tertiary"
+                            className="relative flex h-10! w-[132px]! items-center justify-center overflow-hidden rounded-md! border! border-(--semi-color-border)! bg-white! p-0.5! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--semi-color-primary)"
+                            onClick={() => void generateCaptcha()}
+                            disabled={captchaLoading}
+                            aria-label="刷新验证码"
+                            aria-busy={captchaLoading}
+                            title="刷新验证码"
                         >
-                            <img
-                                src={captchaImage}
-                                alt="验证码"
-                                className="w-36 h-10 cursor-pointer"
-                                onClick={generateCaptcha}
-                                style={{ borderRadius: '2px', cursor: 'pointer' }}
-                                title="点击刷新验证码"
-                            />
-                        </div>
+                            {captchaImage ? (
+                                <img src={captchaImage} alt="验证码" className={`block h-[34px] w-full object-contain ${captchaLoading ? 'opacity-40' : ''}`}/>
+                            ) : <IconRefresh aria-hidden="true"/>}
+                            {captchaLoading ? <Spin size="small" className="absolute"/> : null}
+                        </Button>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <Form.Checkbox initValue={remember_me} field="remember_me" noLabel>记住我</Form.Checkbox>
-                </div>
-
-                {isDemo && <Text type="warning" size="small">默认账号密码为 admin/admin123456</Text>}
-
-                <Button
-                    htmlType="submit"
-                    type="primary"
-                    theme="solid"
-                    loading={loading}
-                    className="w-full h-10 rounded-lg"
-                    style={{fontWeight: 600}}
-                >
+                <Form.Checkbox initValue field="remember_me" noLabel>记住我</Form.Checkbox>
+                {isDemo ? <Text type="warning" size="small">默认账号密码为 admin/admin123456</Text> : null}
+                <Button htmlType="submit" type="primary" theme="solid" loading={loading} className="h-10! w-full! font-semibold!">
                     登录
                 </Button>
             </Form>
-
         </div>
     );
 };

@@ -1,0 +1,11 @@
+allowBuilds:
+  '@parcel/watcher': false
+minimumReleaseAgeExclude:
+  - '@douyinfe/semi-*'
+  - '@rspack/*'
+  - '@rsbuild/*'
+  - '@rslib/*'
+  - '@rspress/*'
+  - '@rstest/*'
+  - '@rsdoctor/*'
+  - '@rslint/*'

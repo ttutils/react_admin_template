@@ -1,28 +1,24 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { Modal, Form } from "@douyinfe/semi-ui";
-import { FormApi } from "@douyinfe/semi-ui/lib/es/form";
-import { UserService } from "@/src/services/user";
-import { IconKey } from "@douyinfe/semi-icons";
-import { ChangePasswdParams } from "@/src/api/user/types";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import {Form, Modal} from '@douyinfe/semi-ui';
+import type {FormApi} from '@douyinfe/semi-ui/lib/es/form';
+import {IconKey} from '@douyinfe/semi-icons';
+import {UserService} from '@/src/services/user';
+import type {ChangePasswdParams} from '@/src/api/user/types';
 
-export interface ChangePasswordModalRef {
-    open: (userId: string) => void;
-}
-
-interface ChangePasswordModalProps {
-    onSuccess?: () => void;
-}
+export interface ChangePasswordModalRef { open: (userId: string) => void; }
+interface ChangePasswordModalProps { onSuccess?: () => void; }
 
 const ChangePasswordModal = forwardRef<ChangePasswordModalRef, ChangePasswordModalProps>(
     ({onSuccess}, ref) => {
         const [visible, setVisible] = useState(false);
         const [okLoading, setOkLoading] = useState(false);
-        const userIdRef = useRef<string>('');
+        const userIdRef = useRef('');
         const formApi = useRef<FormApi>(null);
 
         useImperativeHandle(ref, () => ({
             open: (userId: string) => {
                 userIdRef.current = userId;
+                formApi.current?.reset();
                 setVisible(true);
             },
         }));
@@ -32,9 +28,11 @@ const ChangePasswordModal = forwardRef<ChangePasswordModalRef, ChangePasswordMod
             const values = await formApi.current.validate();
             setOkLoading(true);
             try {
-                await UserService.updatePassword(userIdRef.current, values as ChangePasswdParams);
-                setVisible(false);
-                onSuccess?.(); // 回调成功逻辑
+                const success = await UserService.updatePassword(userIdRef.current, values as ChangePasswdParams);
+                if (success) {
+                    setVisible(false);
+                    onSuccess?.();
+                }
             } finally {
                 setOkLoading(false);
             }
@@ -42,35 +40,35 @@ const ChangePasswordModal = forwardRef<ChangePasswordModalRef, ChangePasswordMod
 
         return (
             <Modal
-                title="修改密码"
-                size="large"
+                className="[&_.semi-modal]:!w-[min(480px,calc(100vw-24px))] [&_.semi-modal]:!max-w-[calc(100vw-24px)] [&_.semi-modal-content]:rounded-lg! [&_.semi-modal-header]:border-b! [&_.semi-modal-header]:border-(--semi-color-border)! [&_.semi-modal-header]:pb-3.5! [&_.semi-modal-body]:max-h-[calc(100dvh-220px)] [&_.semi-modal-body]:overflow-y-auto! [&_.semi-modal-footer]:flex! [&_.semi-modal-footer]:items-center! [&_.semi-modal-footer]:justify-end! [&_.semi-modal-footer]:gap-2! [&_.semi-modal-footer]:border-t! [&_.semi-modal-footer]:border-(--semi-color-border)! [&_.semi-modal-footer]:pt-3.5! [&_.semi-modal-footer_.semi-button]:m-0!"
+                title={<span className="flex items-center gap-2"><IconKey/>修改密码</span>}
                 visible={visible}
-                onCancel={() => setVisible(false)}
+                onCancel={() => {
+                    if (!okLoading) setVisible(false);
+                }}
                 onOk={handleSubmit}
-                okButtonProps={{loading: okLoading}}
+                okText="确认修改"
+                okButtonProps={{loading: okLoading, icon: <IconKey/>}}
                 maskClosable={false}
             >
-                <Form
-                    labelPosition="left"
-                    labelAlign="left"
-                    labelWidth={100}
-                    getFormApi={api => formApi.current = api}
-                >
+                <Form layout="vertical" getFormApi={api => formApi.current = api}>
                     <Form.Input
                         field="password"
                         label="新密码"
                         mode="password"
                         prefix={<IconKey/>}
+                        placeholder="请输入至少 6 位字符"
                         showClear
                         rules={[
                             {required: true, message: '密码不能为空'},
-                            {min: 6, message: '密码至少6位字符'}
+                            {min: 6, message: '密码至少6位字符'},
                         ]}
                     />
                 </Form>
             </Modal>
         );
-    }
+    },
 );
 
+ChangePasswordModal.displayName = 'ChangePasswordModal';
 export default ChangePasswordModal;

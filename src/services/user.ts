@@ -7,7 +7,8 @@ import {
     DeleteUserParams,
     LoginParams,
     UpdateUserParams,
-    UserListParams
+    UserListParams,
+    UserInfo
 } from "@/src/api/user/types";
 
 /** 用户 */
@@ -47,13 +48,14 @@ export const UserService = {
         }
     },
     /** 登录 */
-    login: async (params: LoginParams) => {
+    login: async (params: LoginParams): Promise<boolean> => {
         try {
             const resp = await UserAPI.Login(params);
             if (resp.code === 200) {
                 if (resp.data?.token) {
                     setToken(resp.data.token);
                     Toast.success('登录成功');
+                    return true;
                 } else {
                     Toast.error('登录凭证缺失');
                 }
@@ -64,6 +66,7 @@ export const UserService = {
             Toast.error('登录失败，请重试');
             console.error('Login error:', error);
         }
+        return false;
     },
 
     /** 退出登录 */
@@ -99,9 +102,9 @@ export const UserService = {
     },
 
     /** 更新用户 */
-    update: async (book_id: number, params: UpdateUserParams) => {
+    update: async (user_id: string, params: UpdateUserParams): Promise<boolean> => {
         try {
-            const resp = await UserAPI.Update(book_id, params);
+            const resp = await UserAPI.Update(user_id, params);
             if (resp.code === 200) {
                 Toast.success('更新成功');
                 return true;
@@ -147,17 +150,17 @@ export const UserService = {
     },
 
     /** 用户信息 */
-    info: async (user_id: string) => {
+    info: async (user_id: string): Promise<UserInfo | undefined> => {
         try {
             const resp = await UserAPI.Info(user_id);
             if (resp.code === 200) {
                 return resp.data;
             }
             Toast.error(resp.msg || '获取用户信息失败');
-            return "";
+            return undefined;
         } catch (err) {
             Toast.error('网络请求异常');
-            return "";
+            return undefined;
         }
     }
 };

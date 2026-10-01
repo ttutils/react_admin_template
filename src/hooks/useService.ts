@@ -1,5 +1,13 @@
 
-import { useState, useEffect, DependencyList, useCallback, useMemo } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  type DependencyList,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 
 
 export default <T>(
@@ -9,15 +17,15 @@ export default <T>(
   {
     data: T | undefined;
     loading: boolean;
-    err: any;
-    setErr: any;
+    err: unknown;
+    setErr: Dispatch<SetStateAction<unknown>>;
     count: number;
   },
   () => void
 ] => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T>();
-  const [err, setErr] = useState();
+  const [err, setErr] = useState<unknown>();
   const [count, setCount] = useState(0);
   const promiseCallback = useMemo(() => promise, deps);
   const refetch = useCallback(() => setCount((n) => n + 1), [setCount]);

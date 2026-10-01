@@ -40,7 +40,7 @@ export const BookService = {
     },
 
     /** 更新书籍 */
-    update: async (book_id: number, params: UpdateBookParams) => {
+    update: async (book_id: string, params: UpdateBookParams) => {
         try {
             const resp = await BookAPI.Update(book_id, params);
             if (resp.code === 200) {

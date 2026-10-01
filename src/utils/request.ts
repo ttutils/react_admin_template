@@ -5,7 +5,7 @@ import { getToken, removeToken } from "@/src/utils/auth";
 import { Toast } from "@douyinfe/semi-ui";
 import { APP_LOGIN_URI, NO_TOKEN_API_LIST } from "@/src/config";
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = import.meta.env.DEV;
 
 const alovaInstance = createAlova({
     requestAdapter: adapterFetch(),
@@ -27,7 +27,7 @@ const alovaInstance = createAlova({
                 window.location.href = APP_LOGIN_URI;
             }
             const json = await response.json();
-            isDev && console.log(json);
+            if (isDev) console.log(json);
             return json;
         },
         onError: (err, method) => {

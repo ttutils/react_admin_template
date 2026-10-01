@@ -1,16 +1,20 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
+import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
+import { createRequire } from 'node:module';
 import path from 'path';
 
-let ENV_url;
+const require = createRequire(import.meta.url);
+let ENV_url = '';
 
 try {
     const {ENV_url: importedUrl} = require('./url.config');
-    ENV_url = importedUrl;
+    ENV_url = importedUrl || '';
 } catch (error) {
-    console.error('没有url.config.js文件:', error);
-    ENV_url = '';
+    if ((error as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') {
+        console.error('读取 url.config.ts 失败:', error);
+    }
 }
 
 export default defineConfig({
@@ -24,15 +28,15 @@ export default defineConfig({
             '@': path.resolve(__dirname, './')
         }
     },
-    plugins: [pluginReact(), pluginSass()],
-    server: {
+    plugins: [pluginReact({reactCompiler: true}), pluginSass(), pluginTailwindcss()],
+    server: ENV_url ? {
         proxy: {
             '/api': {
                 target: ENV_url,
                 changeOrigin: true,
             }
         }
-    },
+    } : {},
     output: {
         module: true,
         legalComments: 'none',
@@ -53,14 +57,12 @@ export default defineConfig({
         },
     },
     performance: {
-        chunkSplit: {
-            // 代码拆分
-            strategy: 'split-by-size',
-            minSize: 30000, // 30k
-            maxSize: 500000, // 50k
-        },
         printFileSize: {
             diff: true,
         },
+    },
+    optimization: {
+        chunkIds: 'compat-hashed',
+        moduleIds: 'compat-hashed',
     },
 });
